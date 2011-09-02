@@ -1,6 +1,6 @@
 This is my edit of this code bundled with the Siesta program. It submits and collects the initialisation of the simplex in parallel. As this program works with parallel restarts this should help with speed up it's excution. The actual "aoemba" portion of the code however must be carried out in serial.
 By calling the program through a simple crontab we can allow it to start and stop while it waits for calculations to finish.
-----------------------------------------------------------
+#----------------------------------------------------------
 SIGPOS -- SImple General-Purpose Optimization System
 Version 0.55
 Alberto Garcia, 2007, 2008, 2009
