@@ -14,18 +14,32 @@ name=$1
 #  exit
 #fi
 
-ERROR=$(grep -s -c "ERROR" $name/$name.out)
+ERROR=$(grep -i -s -c -e "ERROR" -e "Stopping" $name/$name.out)
 COMPLETE=$(grep -s -c "Total =" $name/$name.out)
+PENDING=$(squeue -h -u cathcart -o "%j"|grep -c -s -i "$name")
 
-if [ "$COMPLETE" > "0" ] && [ "$ERROR" = "0" ] ; then
-    echo "Calculation $name complete"
+echo $PENDING
+echo $COMPLETE
+echo $ERROR
+grep -i -e "ERROR" -e "Stopping" $name/$name.out
+
+if [ "$ERROR" = "" ];then
+ERROR=0
+fi
+
+if [ "$COMPLETE" = "" ];then
+COMPLETE=0
+fi
+
+if [ "$PENDING" -ge "1" ] && [ "$COMPLETE" = "0" ] && [ "$ERROR" = "0" ] ;then
+  echo "Calculation $name is pending/running."
     exit
-  elif [ "$COMPLETE" = "0" ] && [ "$ERROR" = "0" ] ;then
-    echo "Calculation $name still running."
+elif [ "$COMPLETE" -ge "1" ] && [ "$ERROR" = "0" ] ; then
+  echo "Calculation $name is complete."
     exit
-  elif [ "$ERROR" > "0" ]; then
-    echo "Calculation $name failed."
-    cp null_file $name/OPTIM_OUTPUT
+elif [ "$ERROR" -ge "1" ]; then
+  echo "Calculation $name failed."
+  cp null_file $name/OPTIM_OUTPUT
     exit
 fi
 
