@@ -40,7 +40,7 @@ subroutine submit_job(name,x)
     call get_subs_file(x_dum,name)
   endif
 
-  call generate_subs_file(x,name)
+  call generate_subs_file(x_dum,name)
   call system("sh run_script.sh " // trim(name))!run job
 endsubroutine submit_job
 

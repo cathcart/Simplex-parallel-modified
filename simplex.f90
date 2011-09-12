@@ -9,7 +9,7 @@
 program simplex
 use precision, only: dp
 use vars_module, only: nvars, var, read_vars, constrained
-use vars_module, only: generate_subs_file
+use vars_module, only: generate_subs_file,get_subs_file
 
 use toms_minimizer, only: energy=>objective_function,delayed_submit
 use m_amoeba, only: amoeba
