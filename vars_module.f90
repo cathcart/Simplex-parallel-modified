@@ -51,7 +51,7 @@ CONTAINS
      call io_assign(iu)
      open(unit=iu,file=trim(name)// ".sed",form="formatted",status="old")
      do i = 1, size(x)
-       read(iu,'(A11,F9.8,A2)') prefix, x(i), suffix
+       read(iu,'(A10,F9.8,A2)') prefix, x(i), suffix
      enddo
      close(iu)
    end subroutine get_subs_file
