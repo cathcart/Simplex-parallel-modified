@@ -26,6 +26,7 @@ real(dp)      :: lambda_min, lambda_factor
 integer :: mem_stat, iter, itmax, iu, imin, imin_dummy(1)
 
 integer :: i
+logical :: file_exists
 
    call read_vars("VARS")      ! Sets nvars
 
@@ -58,10 +59,23 @@ integer :: i
 !    VARS file (this should probably be made selectable in
 !    the PARAMS file).
 !
+     inquire(file="initial.sed", exist=file_exists)
+
+     if(file_exists) then
+     print *, "inital file exists"
+     call get_subs_file(p(1,:),"initial")
+     else
+     print *, "initial file doesn't exist"
      do i = 1, nvars
         p(1,i) = var(i)%x
      enddo
      call generate_subs_file(p(1,:),"initial")
+    endif
+!
+!     do i = 1, nvars
+!        p(1,i) = var(i)%x
+!     enddo
+!     call generate_subs_file(p(1,:),"initial")
 
 do
    call generate_subs_file(p(1,:),"best_so_far")
