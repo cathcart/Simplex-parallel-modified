@@ -49,8 +49,6 @@ logical :: file_exists
    read(iu,*) ftol
    close(iu)
 
-     print *, lambda, lambda_factor, lambda_min
-     print *, itmax, ftol
 !--------------------------------------------------------------------
 
 !
