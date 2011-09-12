@@ -14,12 +14,23 @@ function objective_function(x) result(value)
   real(dp), dimension(:), intent(in) :: x
   real(dp)                           :: value
 
+  real(dp), dimension(nvars) :: x_dum
   character(len=40) :: name
+  logical :: file_exists
 
   job_no = job_no + 1
   write(name,"(a,i4.4)") "job_", job_no
 
-  call submit_job(name, x)
+  inquire(file=trim(name)// ".sed", exist=file_exists)
+  x_dum=x
+  if(file_exists) then
+    print *, "file exits. getting information"
+    call get_subs_file(x_dum,name)
+  endif
+
+  call generate_subs_file(x_dum,name)
+  call system("sh run_script.sh " // trim(name))!run job
+
   call collect_job(name,value)
   
 end function objective_function
@@ -64,9 +75,6 @@ job_no_at_start = job_no
     write(name,"(a,i4.4)") "job_", job_no_at_start+i
     call submit_job(name,p(i,:)) 
    enddo
-
-!wait
-
 
 !get results
     do i=1, nvars+1
